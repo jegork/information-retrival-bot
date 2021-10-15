@@ -11,3 +11,17 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Activate form
+  steps:
+    - intent: ask_housing
+    - action: utter_ask_specifics
+    - action: housing_form
+    - active_loop: housing_form
+    - active_loop: null
+    - action: utter_done
+
+- rule: Say hi
+  steps:
+    - intent: greet
+    - action: utter_greet

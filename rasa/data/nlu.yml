@@ -1,5 +1,4 @@
 version: "2.0"
-
 nlu:
 - intent: greet
   examples: |
@@ -16,7 +15,6 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
-
 - intent: goodbye
   examples: |
     - good afternoon
@@ -30,7 +28,6 @@ nlu:
     - see you around
     - bye bye
     - see you later
-
 - intent: affirm
   examples: |
     - yes
@@ -39,7 +36,6 @@ nlu:
     - of course
     - that sounds good
     - correct
-
 - intent: deny
   examples: |
     - no
@@ -49,7 +45,6 @@ nlu:
     - don't like that
     - no way
     - not really
-
 - intent: mood_great
   examples: |
     - perfect
@@ -66,7 +61,6 @@ nlu:
     - so so perfect
     - so good
     - so perfect
-
 - intent: mood_unhappy
   examples: |
     - my day was horrible
@@ -83,10 +77,39 @@ nlu:
     - extremly sad
     - so saad
     - so sad
-
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+- intent: ask_housing
+  examples: |
+    - I want to get information about housing
+    - can you help me with selecting a house?
+    - I am interesting in finding a house
+    - I want to find an apartment
+    - Help me find housing
+    - I need to get an apartment
+    - I am looking for a flat
+- intent: tell_price
+  examples: |
+    - Maximum price is [400](price)
+    - Minimum price is [10000](price)
+    - It is [123123](price)
+    - It is [12300](price) euros
+    - The lowest is [1231](price)
+    - Highest is [1123](price) euros
+    - I can pay up to [400111](price)
+    - My budget is [400](price)
+    - [400](price)
+    - [12003](price) euros
+    - [12313](price) is fine
+- intent: tell_city
+  examples: |
+    - It is in [Tilburg](city)
+    - I would like a house in [Amsterdam](city)
+    - Give me some results in [The Hague](city)
+    - It should be in [Rotterdam](city)
+    - [Tilburg](city)
+    - [Breda](city), Netherlands
