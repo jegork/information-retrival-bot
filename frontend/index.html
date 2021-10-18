@@ -129,12 +129,21 @@
 </body>
 
 <script>
-    let user;
-    window.addEventListener("load", function () {
-        do {
-            user = prompt("Enter your name:", "")
-        } while (user == null || user == "")
-    });
+    if (!"WebSocket" in window) {
+        alert("Websocket not supported")
+    }
+    let websocket = new WebSocket("ws://localhost:8000/ws");
+
+    websocket.onmessage = (event) => {
+        const messagesList = document.getElementById('messages');
+        var messageElement = document.createElement('p');
+        messageElement.innerHTML = JSON.parse(event.data).text;
+        messageElement.classList.add('outbound');
+
+        messagesList.appendChild(messageElement);
+
+    };
+
     var lang = 'en';
 
     function changeLanguage(chosenLang) {
@@ -149,6 +158,7 @@
         } else {
             lang = chosenLang;
         }
+        console.log(lang);
     }
 
     function sendText() {
@@ -162,23 +172,8 @@
             messageElement.classList.add('inbound');
 
             messagesList.appendChild(messageElement);
-
-            fetch('http://localhost:8000/chat/' + lang, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json',
-                },
-                body: JSON.stringify({ 'text': text, 'sender': user })
-            }).then(response => {
-                response.json().then(body => {
-                    var messageElement = document.createElement('p');
-                    messageElement.innerHTML = body.text;
-                    messageElement.classList.add('outbound');
-
-                    messagesList.appendChild(messageElement);
-                });
-
-            })
+            console.log()
+            websocket.send(JSON.stringify({'message': text, 'lang': lang}));
         }
         else {
             alert('Empty text!')

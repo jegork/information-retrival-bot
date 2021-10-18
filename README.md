@@ -2,6 +2,12 @@
 
 ## Running
 
+```bash
+docker-compose up --build
+```
+
+To test the bot, open frontend/index.html
+
 ### DialoGPT
 
 DialoGPT can be run and tested using the text-generative-model/train_dialogpt.ipynb in a code cell at the end.
@@ -25,8 +31,8 @@ rasa shell
 - [ ] Write tests
 - [ ] Update Rasa conversations
 - [ ] Make Rasa out-of-scope case and hook up DialoGPT model
-- [ ] Make Docker images
+- [x] Make Docker images
 - [x] Write frontend with UI
 - [ ] Clean input data for DialoGPT better
 - [ ] Transition notebooks code into .py files
-- [ ] Add requirements.txt
+- [x] Add requirements.txt
