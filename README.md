@@ -26,7 +26,7 @@ rasa shell
 - [ ] Update Rasa conversations
 - [ ] Make Rasa out-of-scope case and hook up DialoGPT model
 - [ ] Make Docker images
-- [ ] Write frontend with UI
+- [x] Write frontend with UI
 - [ ] Clean input data for DialoGPT better
 - [ ] Transition notebooks code into .py files
 - [ ] Add requirements.txt

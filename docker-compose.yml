@@ -1,0 +1,23 @@
+version: "3"
+services:
+  rasa:
+    build: ./rasa
+    container_name: rasa_server
+    user: root
+    ports:
+        - 5005:5005
+    healthcheck:
+      test: curl --fail -s http://localhost:5005/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  server:
+    build: ./server
+    container_name: fastapi_server
+    ports:
+      - 8000:8000
+    environment:
+      - RASA_HOST=rasa
+    depends_on:
+      rasa:
+        condition: service_healthy
