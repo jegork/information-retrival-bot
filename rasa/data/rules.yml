@@ -15,7 +15,7 @@ rules:
 - rule: Activate form
   steps:
     - intent: ask_housing
-    - action: utter_ask_specifics
+    #- action: utter_ask_specifics
     - action: housing_form
     - active_loop: housing_form
     - active_loop: null

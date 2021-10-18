@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Retrieval Bot</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #app {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+    }
+
+    .chat {
+        display: flex;
+        width: 500px;
+        min-height: 700px;
+        border: 1px solid black;
+        flex-direction: column;
+    }
+
+    .user-input {
+        display: flex;
+        width: 100%;
+        border-top: 1px solid black;
+    }
+
+    .languages {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        border-bottom: 1px solid black;
+    }
+
+    .languages>input[type='button'] {
+        font-size: 24px;
+        flex-grow: 1;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        transition: all 0.1s;
+    }
+
+    .languages>input[type='button']:hover {
+        background: rgb(120, 129, 255);
+        color: white !important;
+    }
+
+    .languages>input[type='text'] {
+        font-size: 24px;
+        border: none;
+        flex-grow: 1;
+    }
+
+    #input {
+        flex-grow: 9;
+        padding: 5px;
+        border-radius: 0;
+        border: none;
+    }
+
+    #send {
+        flex-grow: 1;
+        border-radius: 0;
+        border: none;
+    }
+
+    #messages {
+        flex-grow: 1;
+        align-items: center;
+        flex-direction: column;
+        display: flex;
+    }
+
+    #messages>p {
+        padding: 10px;
+        max-width: 50%;
+        box-shadow: 0 0 1px black;
+        border-radius: 3px;
+        margin: 15px 10px;
+    }
+
+    .inbound {
+        background: rgb(86, 97, 255);
+        color: white;
+        align-self: flex-end;
+    }
+
+    .outbound {
+        background: '#dbdbdb';
+        align-self: flex-start;
+    }
+
+    #lang-input {
+        max-width: 100px;
+    }
+</style>
+
+
+<body>
+    <div id='app'>
+        <div class="chat">
+            <div class="languages">
+                <input type="button" value="EN" onclick="changeLanguage('en')">
+                <input type="button" value="NL" onclick="changeLanguage('nl')">
+                <input type="button" value="BG" onclick="changeLanguage('bg')">
+                <input type="button" value="RU" onclick="changeLanguage('ru')">
+                <input type="text" maxlength="2" placeholder="Code" id="lang-input">
+                <input type="button" value="✓" onclick="changeLanguage()" style="color: green;">
+            </div>
+            <div id="messages">
+
+            </div>
+            <div class="user-input">
+                <input type="text" id="input" placeholder="Type here...">
+                <input type="button" id="send" onclick="sendText()" value="Send">
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    let user;
+    window.addEventListener("load", function () {
+        do {
+            user = prompt("Enter your name:", "")
+        } while (user == null || user == "")
+    });
+    var lang = 'en';
+
+    function changeLanguage(chosenLang) {
+        if (chosenLang === undefined) {
+            const inputLang = document.getElementById('lang-input').value;
+
+            if (inputLang === '') {
+                alert('Enter language code!')
+            } else {
+                lang = document.getElementById('lang-input').value;
+            }
+        } else {
+            lang = chosenLang;
+        }
+    }
+
+    function sendText() {
+        const text = document.getElementById('input').value;
+        document.getElementById('input').value = '';
+        const messagesList = document.getElementById('messages');
+
+        if (text !== "") {
+            var messageElement = document.createElement('p');
+            messageElement.innerHTML = text;
+            messageElement.classList.add('inbound');
+
+            messagesList.appendChild(messageElement);
+
+            fetch('http://localhost:8000/chat/' + lang, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                },
+                body: JSON.stringify({ 'text': text, 'sender': user })
+            }).then(response => {
+                response.json().then(body => {
+                    var messageElement = document.createElement('p');
+                    messageElement.innerHTML = body.text;
+                    messageElement.classList.add('outbound');
+
+                    messagesList.appendChild(messageElement);
+                });
+
+            })
+        }
+        else {
+            alert('Empty text!')
+        }
+    }
+</script>
+
+</html>
