@@ -26,13 +26,14 @@ rasa shell
 ```
 
 ## Todo
-- [ ] Add FastAPI server for translation and serving the search results
-- [ ] Make custom action to fetch results from server
+- [x] Add FastAPI server for translation
+- [ ] Serve the search results with FastAPI
+- [ ] Make Rasa custom action to fetch results from server
 - [ ] Write tests
-- [ ] Update Rasa conversations
-- [ ] Make Rasa out-of-scope case and hook up DialoGPT model
+- [ ] Create idea for what the bot is going to search for
+- [ ] Create related Rasa conversations
+- [x] Make Rasa out-of-scope case and hook up DialoGPT model
 - [x] Make Docker images
 - [x] Write frontend with UI
 - [ ] Clean input data for DialoGPT better
-- [ ] Transition notebooks code into .py files
 - [x] Add requirements.txt

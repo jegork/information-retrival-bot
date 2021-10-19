@@ -2,4 +2,5 @@ fastapi
 uvicorn[standard]
 httpx
 mtranslate
-socketio
+python-socketio
+aiohttp

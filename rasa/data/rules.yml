@@ -15,7 +15,7 @@ rules:
 - rule: Activate form
   steps:
     - intent: ask_housing
-    #- action: utter_ask_specifics
+    - action: utter_ask_specifics
     - action: housing_form
     - active_loop: housing_form
     - active_loop: null
@@ -25,3 +25,8 @@ rules:
   steps:
     - intent: greet
     - action: utter_greet
+
+- rule: Fallback to DialoGPT
+  steps:
+  - intent: nlu_fallback
+  - action: action_dialogpt

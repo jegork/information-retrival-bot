@@ -11,6 +11,15 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    depends_on:
+      - actions
+  actions:
+    build: ./rasa/actions
+    container_name: rasa_actions_server
+    ports:
+      - 5055:5055
+    environment:
+      - TRANSFORMERS_CACHE=/app/cache
   server:
     build: ./server
     container_name: fastapi_server

@@ -65,7 +65,7 @@ responses:
   utter_goodbye:
   - text: Bye
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+  - text: I am a bot, I always feel good.
   utter_ask_specifics:
   - text: Sure thing! Give me some details.
   utter_ask_max_price:
@@ -76,7 +76,8 @@ responses:
   - text: In which city?
   utter_done:
   - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {city}.
-actions: []
+actions:
+  - action_dialogpt
 forms:
   housing_form:
     required_slots:

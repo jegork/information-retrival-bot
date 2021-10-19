@@ -1,7 +1,5 @@
-rasa
 numpy
 pandas
 torch
 transformers
 datasets
-mtranslate
