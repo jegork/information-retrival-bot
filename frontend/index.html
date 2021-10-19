@@ -49,8 +49,14 @@
         transition: all 0.1s;
     }
 
-    .languages>input[type='button']:hover {
+    .languages>input[type='button']:not(.button-active):hover {
         background: rgb(120, 129, 255);
+        color: white !important;
+        
+    }
+
+    .button-active {
+        background: rgb(87, 98, 251);
         color: white !important;
     }
 
@@ -108,17 +114,18 @@
 <body>
     <div id='app'>
         <div class="chat">
+
             <div class="languages">
-                <input type="button" value="EN" onclick="changeLanguage('en')">
-                <input type="button" value="NL" onclick="changeLanguage('nl')">
-                <input type="button" value="BG" onclick="changeLanguage('bg')">
-                <input type="button" value="RU" onclick="changeLanguage('ru')">
+                <input type="button" value="EN" onclick="changeLanguage(event)" class="button-active">
+                <input type="button" value="NL" onclick="changeLanguage(event)">
+                <input type="button" value="BG" onclick="changeLanguage(event)">
+                <input type="button" value="RU" onclick="changeLanguage(event)">
                 <input type="text" maxlength="2" placeholder="Code" id="lang-input">
                 <input type="button" value="✓" onclick="changeLanguage()" style="color: green;">
             </div>
-            <div id="messages">
 
-            </div>
+            <div id="messages"></div>
+
             <div class="user-input">
                 <input type="text" id="input" placeholder="Type here...">
                 <input type="button" id="send" onclick="sendText()" value="Send">
@@ -130,7 +137,7 @@
 
 <script>
     if (!"WebSocket" in window) {
-        alert("Websocket not supported")
+        alert("Websocket not supported! Please update your browser.")
     }
     let websocket = new WebSocket("ws://localhost:8000/ws");
 
@@ -146,19 +153,32 @@
 
     var lang = 'en';
 
-    function changeLanguage(chosenLang) {
-        if (chosenLang === undefined) {
-            const inputLang = document.getElementById('lang-input').value;
+    function changeLanguage(e) {
+        if (e === undefined) {
+            const inputLang = document.getElementById('lang-input').value.toLowerCase();
 
             if (inputLang === '') {
                 alert('Enter language code!')
             } else {
                 lang = document.getElementById('lang-input').value;
+
+                const lng = document.getElementsByClassName('languages')[0];
+                for (let i = 0; i < lng.children.length; i++) {
+                    if (lng.children[i].classList.contains('button-active')) {
+                        lng.children[i].classList.remove('button-active');
+                    }
+                }
             }
         } else {
-            lang = chosenLang;
+            for (let i = 0; i < e.target.parentNode.children.length; i++) {
+                if (e.target.parentNode.children[i].classList.contains('button-active')) {
+                    e.target.parentNode.children[i].classList.remove('button-active');
+                }
+            }
+            e.target.classList.add('button-active');
+
+            lang = e.target.value.toLowerCase();
         }
-        console.log(lang);
     }
 
     function sendText() {
@@ -172,8 +192,7 @@
             messageElement.classList.add('inbound');
 
             messagesList.appendChild(messageElement);
-            console.log()
-            websocket.send(JSON.stringify({'message': text, 'lang': lang}));
+            websocket.send(JSON.stringify({ 'message': text, 'lang': lang }));
         }
         else {
             alert('Empty text!')
