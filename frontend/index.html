@@ -23,6 +23,7 @@
         display: flex;
         width: 500px;
         min-height: 700px;
+        max-height: 700px;
         border: 1px solid black;
         flex-direction: column;
     }
@@ -84,6 +85,7 @@
         align-items: center;
         flex-direction: column;
         display: flex;
+        overflow-y: auto;
     }
 
     #messages>p {
@@ -92,6 +94,7 @@
         box-shadow: 0 0 1px black;
         border-radius: 3px;
         margin: 15px 10px;
+        white-space: pre-line;
     }
 
     .inbound {
@@ -120,14 +123,14 @@
                 <input type="button" value="NL" onclick="changeLanguage(event)">
                 <input type="button" value="BG" onclick="changeLanguage(event)">
                 <input type="button" value="RU" onclick="changeLanguage(event)">
-                <input type="text" maxlength="2" placeholder="Code" id="lang-input">
+                <input type="text" maxlength="2" placeholder="Code" id="lang-input" autocomplete="off">
                 <input type="button" value="✓" onclick="changeLanguage()" style="color: green;">
             </div>
 
             <div id="messages"></div>
 
             <div class="user-input">
-                <input type="text" id="input" placeholder="Type here...">
+                <input type="text" id="input" placeholder="Type here..." value="" autocomplete="off">
                 <input type="button" id="send" onclick="sendText()" value="Send">
             </div>
 
@@ -139,6 +142,7 @@
     if (!"WebSocket" in window) {
         alert("Websocket not supported! Please update your browser.")
     }
+
     let websocket = new WebSocket("ws://localhost:8000/ws");
 
     websocket.onmessage = (event) => {
@@ -150,6 +154,18 @@
         messagesList.appendChild(messageElement);
 
     };
+
+    document.getElementById('input').addEventListener("keyup", (event) => {
+        if (event.keyCode == 13){
+            sendText()
+        }
+    });
+
+    document.getElementById('lang-input').addEventListener("keyup", (event) => {
+        if (event.keyCode == 13){
+            changeLanguage()
+        }
+    });
 
     var lang = 'en';
 
@@ -170,6 +186,8 @@
                 }
             }
         } else {
+            document.getElementById('lang-input').value = "";
+
             for (let i = 0; i < e.target.parentNode.children.length; i++) {
                 if (e.target.parentNode.children[i].classList.contains('button-active')) {
                     e.target.parentNode.children[i].classList.remove('button-active');
