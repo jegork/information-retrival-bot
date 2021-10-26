@@ -1,14 +1,14 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from mtranslate import translate
 import httpx
-import asyncio
 import json
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from typing import Dict
 import socketio
-from random import randint
+from bs4 import BeautifulSoup
+import requests
 class Message(BaseModel):
     text: str
     sender: str
@@ -61,10 +61,6 @@ async def websocket_endpoint(websocket: WebSocket):
         await sio.disconnect()
         print('User disconnected')
 
-@app.get("/")
-def home():
-    return {'Hello': 'world'}
-
 async def request(sender: str, msg: str):
     async with httpx.AsyncClient() as client:
         response = await client.post(f'http://{os.getenv("RASA_HOST", "localhost")}:5005/webhooks/rest/webhook', json={'sender': sender, 'message': msg})
@@ -92,9 +88,21 @@ def connect():
 
 @sio.on('bot_uttered')
 async def bot_uttered(msg):
-    if manager.lang != 'en':
-        text = translate(msg['text'], manager.lang, 'en')
-    else:
-        text = msg['text']
+    response_data = {}
 
-    await manager.websocket.send_json({'text': text})
+    if 'text' in msg:
+        if manager.lang != 'en':
+            text = translate(msg['text'], manager.lang, 'en')
+        else:
+            text = msg['text']
+
+        response_data['text'] = text
+
+    if 'attachment' in msg:
+        r = requests.get(msg['attachment'])
+
+        soup = BeautifulSoup(r.text)
+
+        response_data['image'] = soup.find(class_='picture__image')['src']
+
+    await manager.websocket.send_json(response_data)

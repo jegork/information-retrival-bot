@@ -78,6 +78,7 @@ responses:
   - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {city}.
 actions:
   - action_dialogpt
+  - action_get_housing
 forms:
   housing_form:
     required_slots:

@@ -20,6 +20,7 @@ rules:
     - active_loop: housing_form
     - active_loop: null
     - action: utter_done
+    - action: action_get_housing
 
 - rule: Say hi
   steps:
