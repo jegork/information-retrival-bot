@@ -44,10 +44,10 @@ rasa shell
 - [x] Make Rasa out-of-scope case and hook up DialoGPT model
 - [x] Make Docker images
 - [x] Write frontend with UI
-- [ ] Better clean input data for DialoGPT
-- [ ] Add data for DialoGPT
-- [ ] Retrain DialoGPT
-- [ ] Add tokenizer to DialoGPT repository
+- [x] Better clean input data for DialoGPT
+- [x] Add data for DialoGPT
+- [x] Retrain DialoGPT
+- [x] Add tokenizer to DialoGPT repository
 - [ ] Code cleanup
 - [ ] Handle wrong inputs in form
 - [x] Add requirements.txt

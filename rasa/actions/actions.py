@@ -3,52 +3,55 @@
 #
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
+import os
+import sqlite3
 from typing import Any, Text, Dict, List
-#
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from transformers import AutoTokenizer, AutoModelForCausalLM
-import sqlalchemy as sqla
-import os
-import sqlite3
+
+
 class GenerateText(Action):
 
     def __init__(self):
-        if os.path.exists('models/DialoGPT-medium'):
-            self.tokenizer = AutoTokenizer.from_pretrained("models/DialoGPT-medium")
-        else:
-            self.tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
         if os.path.exists('models/dialogpt-twitter-ubuntu'):
             self.model = AutoModelForCausalLM.from_pretrained("models/dialogpt-twitter-ubuntu")
+            self.tokenizer = AutoTokenizer.from_pretrained("models/dialogpt-twitter-ubuntu")
         else:
             self.model = AutoModelForCausalLM.from_pretrained("jegorkitskerkin/dialogpt-twitter-ubuntu")
+            self.tokenizer = AutoTokenizer.from_pretrained("jegorkitskerkin/dialogpt-twitter-ubuntu")
 
     def name(self) -> Text:
         return "action_dialogpt"
 
     async def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+            self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        new_user_input_ids = self.tokenizer.encode(tracker.latest_message['text'] + self.tokenizer.eos_token, return_tensors='pt')
+        new_user_input_ids = self.tokenizer.encode(tracker.latest_message['text'] + self.tokenizer.eos_token,
+                                                   return_tensors='pt')
 
         chat_history_ids = self.model.generate(
-            new_user_input_ids, max_length=1000, 
+            new_user_input_ids,
+            max_length=1000,
             pad_token_id=self.tokenizer.eos_token_id,
-            min_length=16,
+            min_length=24,
             num_return_sequences=1,
             no_repeat_ngram_size=2,
             do_sample=True,
-            top_k=50,
-            top_p=0.9,
-            temperature = 0.6,
+            # top_k=50,
+            top_p=0.85,
+            # temperature=0.6,
             device='cpu'
         )
 
-        generated_text = self.tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0], skip_special_tokens=True)
+        generated_text = self.tokenizer.decode(chat_history_ids[:, new_user_input_ids.shape[-1]:][0],
+                                               skip_special_tokens=True)
+        generated_text = generated_text.strip()
 
         dispatcher.utter_message(text=generated_text)
 
         return []
+
 
 class GetHousing(Action):
 
@@ -68,7 +71,8 @@ class GetHousing(Action):
     def name(self) -> Text:
         return "action_get_housing"
 
-    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker , domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[
+        Dict[Text, Any]]:
 
         max_price = tracker.get_slot('max_price')
         min_price = tracker.get_slot('min_price')
@@ -85,7 +89,7 @@ class GetHousing(Action):
 
             return []
 
-        dispatcher.utter_message(text=f'Found {len(rows)} properties' if len(rows) <=10 else 
+        dispatcher.utter_message(text=f'Found {len(rows)} properties' if len(rows) <= 10 else
             f'Found {len(rows)} properties, showing first 10')
 
         for row in rows[:10]:
@@ -98,7 +102,7 @@ class GetHousing(Action):
             Location: {row['location']}
             """
 
-            dispatcher.utter_message(text=msg, attachment = row['link'])
+            dispatcher.utter_message(text=msg, attachment=row['link'])
 
         cur.close()
 

@@ -1,2 +1,3 @@
 text-generative-model/data/*/*
 **/__pycache__
+.idea
