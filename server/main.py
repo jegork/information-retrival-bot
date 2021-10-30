@@ -1,28 +1,33 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from mtranslate import translate
-import httpx
 import json
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
 import os
-from typing import Dict
+import httpx
+import requests
 import socketio
 from bs4 import BeautifulSoup
-import requests
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+from mtranslate import translate
+from pydantic import BaseModel
+from starlette.responses import FileResponse
+
+
 class Message(BaseModel):
     text: str
     sender: str
+
+
 class Manager():
     def __init__(self):
         self.websocket = None
         self.lang = None
         self.user_id = None
-    
+
     def set_websocket(self, websocket: WebSocket):
         self.websocket = websocket
 
     def set_lang(self, lang: str):
         self.lang = lang
+
     def set_user_id(self, user_id: int):
         self.user_id = user_id
 
@@ -38,6 +43,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get('/')
+def main_page():
+    return FileResponse('index.html')
+
 
 @app.websocket('/ws')
 async def websocket_endpoint(websocket: WebSocket):
@@ -61,11 +72,14 @@ async def websocket_endpoint(websocket: WebSocket):
         await sio.disconnect()
         print('User disconnected')
 
+
 async def request(sender: str, msg: str):
     async with httpx.AsyncClient() as client:
-        response = await client.post(f'http://{os.getenv("RASA_HOST", "localhost")}:5005/webhooks/rest/webhook', json={'sender': sender, 'message': msg})
+        response = await client.post(f'http://{os.getenv("RASA_HOST", "localhost")}:5005/webhooks/rest/webhook',
+                                     json={'sender': sender, 'message': msg})
 
     return json.loads(response.text)[0]
+
 
 @app.post('/chat/{lang}')
 async def chat(lang: str, message: Message):
@@ -82,9 +96,11 @@ async def chat(lang: str, message: Message):
 
         return {'text': response['text']}
 
+
 @sio.on('connect')
 def connect():
     print('Rasa socket.io connected')
+
 
 @sio.on('bot_uttered')
 async def bot_uttered(msg):

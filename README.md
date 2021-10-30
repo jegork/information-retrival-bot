@@ -13,24 +13,11 @@ From the root directory:
 docker-compose up
 ```
 
-To test the bot, open frontend/index.html
+The UI is available at http://localhost:8000/
 
-### DialoGPT
+## DialoGPT
 
-DialoGPT can be run and tested using the text-generative-model/train_dialogpt.ipynb in a code cell at the end.
-
-### Rasa
-
-To compile Rasa server use:
-```bash
-cd rasa
-rasa train
-```
-
-To run Rasa server using command line use (from the rasa folder):
-```bash
-rasa shell
-```
+DialoGPT can be run and tested using the ``text-generative-model/train_dialogpt.ipynb`` in a code cell at the end.
 
 ## Todo
 - [x] Add FastAPI server for translation

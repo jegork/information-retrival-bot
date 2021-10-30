@@ -1,7 +1,8 @@
-FROM python:3.7 as base
+FROM python:3.7
 WORKDIR /app
 COPY main.py .
 COPY requirements.txt .
+COPY index.html .
 
 RUN pip install --upgrade pip
 
