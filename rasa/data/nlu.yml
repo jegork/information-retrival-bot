@@ -28,61 +28,10 @@ nlu:
     - see you around
     - bye bye
     - see you later
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
 - intent: bot_challenge
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - how are you?
+    - how is it going?
 - intent: ask_housing
   examples: |
     - I want to get information about housing
@@ -92,19 +41,27 @@ nlu:
     - Help me find housing
     - I need to get an apartment
     - I am looking for a flat
-- intent: tell_price
+- intent: tell_number
   examples: |
-    - Maximum price is [400](price)
-    - Minimum price is [10000](price)
-    - It is [123123](price)
-    - It is [12300](price) euros
-    - The lowest is [1231](price)
-    - Highest is [1123](price) euros
-    - I can pay up to [400111](price)
+    - Maximum price is [400](number)
+    - Minimum price is [10000](number)
+    - It is [123123](number)
+    - It is [12300](number) euros
+    - The lowest is [1231](number)
+    - Highest is [1123](number) euros
+    - I can pay up to [400111](number)
     - My budget is [400](price)
-    - [400](price)
-    - [12003](price) euros
-    - [12313](price) is fine
+    - [400](number)
+    - [12003](number) euros
+    - [12313](number) is fine
+    - [150](number) square meters
+    - [100](number) meters
+    - [70](number) m2
+    - I want [100](number) square meters
+    - At least [45](number)
+    - [10](number) rooms
+    - I want [4](number) rooms
+    - At least [6](number) rooms
 - intent: tell_city
   examples: |
     - It is in [Tilburg](city)

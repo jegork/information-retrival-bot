@@ -5,7 +5,7 @@ services:
     container_name: rasa_server
     user: root
     ports:
-        - 5005:5005
+      - "5005:5005"
     healthcheck:
       test: curl --fail -s http://localhost:5005/ || exit 1
       interval: 30s
@@ -17,16 +17,16 @@ services:
     build: ./rasa/actions
     container_name: rasa_actions_server
     ports:
-      - 5055:5055
+      - "5055:5055"
     environment:
       - TRANSFORMERS_CACHE=/app/cache
     volumes:
-      - $PWD/rasa/actions/data:/app/actions/data
+      - ./rasa/actions/data:/app/actions/data
   server:
     build: ./server
     container_name: fastapi_server
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - RASA_HOST=rasa
     depends_on:

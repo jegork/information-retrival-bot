@@ -26,8 +26,8 @@ DialoGPT can be run and tested using the ``text-generative-model/train_dialogpt.
 - [ ] Add buttons for interior and city choice
 - [ ] Write tests
 - [x] Create idea for what the bot is going to search for
-- [ ] Create related Rasa conversations
-- [ ] Add Rasa filtering dialogues
+- [x] Create related Rasa conversations
+- [x] Add Rasa filtering dialogues
 - [x] Make Rasa out-of-scope case and hook up DialoGPT model
 - [x] Make Docker images
 - [x] Write frontend with UI

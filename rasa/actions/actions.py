@@ -6,7 +6,9 @@
 import os
 import sqlite3
 from typing import Any, Text, Dict, List
+
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
@@ -14,12 +16,12 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 class GenerateText(Action):
 
     def __init__(self):
-        if os.path.exists('models/dialogpt-twitter-ubuntu'):
-            self.model = AutoModelForCausalLM.from_pretrained("models/dialogpt-twitter-ubuntu")
-            self.tokenizer = AutoTokenizer.from_pretrained("models/dialogpt-twitter-ubuntu")
+        if os.path.exists('models/dialogpt-ir-bot'):
+            self.model = AutoModelForCausalLM.from_pretrained("models/dialogpt-ir-bot")
+            self.tokenizer = AutoTokenizer.from_pretrained("models/dialogpt-ir-bot")
         else:
-            self.model = AutoModelForCausalLM.from_pretrained("jegorkitskerkin/dialogpt-twitter-ubuntu")
-            self.tokenizer = AutoTokenizer.from_pretrained("jegorkitskerkin/dialogpt-twitter-ubuntu")
+            self.model = AutoModelForCausalLM.from_pretrained("jegorkitskerkin/dialogpt-ir-bot")
+            self.tokenizer = AutoTokenizer.from_pretrained("jegorkitskerkin/dialogpt-ir-bot")
 
     def name(self) -> Text:
         return "action_dialogpt"
@@ -77,20 +79,31 @@ class GetHousing(Action):
         max_price = tracker.get_slot('max_price')
         min_price = tracker.get_slot('min_price')
         city = tracker.get_slot('city')
+        min_rooms = tracker.get_slot('min_rooms')
+        min_area = tracker.get_slot('min_area')
 
         cur = self.conn.cursor()
 
-        cur.execute("SELECT * FROM housing WHERE city = ? AND price >= ? AND price <= ?", (city, min_price, max_price))
+        cur.execute("SELECT * FROM housing WHERE city = ? AND price >= ? AND price <= ? AND rooms >= ? AND area >= ?",
+                    (city, min_price, max_price, min_rooms, min_area))
 
         rows = cur.fetchall()
 
         if len(rows) == 0:
             dispatcher.utter_message(text='Sorry! No results found! Please try again.')
 
-            return []
+            return [
+                SlotSet('max_price', None),
+                SlotSet('min_price', None),
+                SlotSet('city', None),
+                SlotSet('min_rooms', None),
+                SlotSet('min_area', None)
+            ]
 
-        dispatcher.utter_message(text=f'Found {len(rows)} properties' if len(rows) <= 10 else
-            f'Found {len(rows)} properties, showing first 10')
+        dispatcher.utter_message(text=
+                                 f'Found {len(rows)} properties' if len(rows) <= 10
+                                 else f'Found {len(rows)} properties, showing first 10'
+                                 )
 
         for row in rows[:10]:
             msg = f"""
@@ -106,4 +119,10 @@ class GetHousing(Action):
 
         cur.close()
 
-        return []
+        return [
+            SlotSet('max_price', None),
+            SlotSet('min_price', None),
+            SlotSet('city', None),
+            SlotSet('min_rooms', None),
+            SlotSet('min_area', None)
+        ]

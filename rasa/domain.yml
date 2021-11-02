@@ -5,31 +5,29 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- greet:
-    use_entities: true
-- goodbye:
-    use_entities: true
-- affirm:
-    use_entities: true
-- deny:
-    use_entities: true
-- mood_great:
-    use_entities: true
-- mood_unhappy:
-    use_entities: true
-- bot_challenge:
-    use_entities: true
-- ask_housing:
-    use_entities: true
-- tell_price:
-    use_entities: true
-- tell_city:
-    use_entities: true
-- choose_language:
-    use_entities: true
+  - greet:
+      use_entities: true
+  - goodbye:
+      use_entities: true
+  - affirm:
+      use_entities: true
+  - deny:
+      use_entities: true
+  - mood_great:
+      use_entities: true
+  - mood_unhappy:
+      use_entities: true
+  - bot_challenge:
+      use_entities: true
+  - ask_housing:
+      use_entities: true
+  - tell_number:
+      use_entities: true
+  - tell_city:
+      use_entities: true
 entities:
-- price
-- city
+  - number
+  - city
 slots:
   min_price:
     type: rasa.shared.core.slots.FloatSlot
@@ -55,27 +53,38 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
-    max_value: 10000.0
+    max_value: 1000.0
     min_value: 0.0
+  min_rooms:
+    type: rasa.shared.core.slots.FloatSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+    min_value: 0.0
+    max_value: 10.0
 responses:
   utter_greet:
-  - text: Hey! I am a bot that will help you choose your future housing!
+    - text: Hey! I am a bot that will help you choose your future housing!
   utter_did_that_help:
-  - text: Did that help you?
+    - text: Did that help you?
   utter_goodbye:
-  - text: Bye
+    - text: Bye
   utter_iamabot:
-  - text: I am a bot, I always feel good.
+    - text: I am a bot, I always feel good.
   utter_ask_specifics:
-  - text: Sure thing! Give me some details.
+    - text: Sure thing! Give me some details.
   utter_ask_max_price:
-  - text: What is the maximum price you're willing to pay for it?
+    - text: What is the maximum price you're willing to pay for it?
   utter_ask_min_price:
-  - text: What is the minimal price of the housing?
+    - text: What is the minimal price of your future housing?
   utter_ask_city:
-  - text: In which city?
+    - text: In which city?
+  utter_ask_min_area:
+    - text: What minimal area do you want it to be?
+  utter_ask_min_rooms:
+    - text: And at least how many rooms?
   utter_done:
-  - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {city}.
+    - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {city}, with minimal {min_area} square meters and {min_rooms} rooms.
 actions:
   - action_dialogpt
   - action_get_housing
@@ -83,12 +92,18 @@ forms:
   housing_form:
     required_slots:
       city:
-      - entity: city
-        type: from_entity
+        - entity: city
+          type: from_entity
       max_price:
-      - entity: price
-        type: from_entity
+        - entity: number
+          type: from_entity
       min_price:
-      - entity: price
-        type: from_entity
-e2e_actions: []
+        - entity: number
+          type: from_entity
+      min_area:
+        - entity: number
+          type: from_entity
+      min_rooms:
+        - entity: number
+          type: from_entity
+e2e_actions: [ ]

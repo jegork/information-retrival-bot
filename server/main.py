@@ -60,7 +60,6 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_json()
-            print(data)
             manager.set_lang(data['lang'])
             if data['lang'] != 'en':
                 text = translate(data['message'], 'en', data['lang'])
@@ -117,8 +116,10 @@ async def bot_uttered(msg):
     if 'attachment' in msg:
         r = requests.get(msg['attachment'])
 
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, features='html.parser')
+        ad_viewport = soup.find(class_='carrousel__viewport')
 
-        response_data['image'] = soup.find(class_='picture__image')['src']
+        if ad_viewport is not None:
+            response_data['image'] = ad_viewport.find(class_='picture__image')['src']
 
     await manager.websocket.send_json(response_data)
