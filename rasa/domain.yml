@@ -5,105 +5,126 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-  - greet:
-      use_entities: true
-  - goodbye:
-      use_entities: true
-  - affirm:
-      use_entities: true
-  - deny:
-      use_entities: true
-  - mood_great:
-      use_entities: true
-  - mood_unhappy:
-      use_entities: true
-  - bot_challenge:
-      use_entities: true
-  - ask_housing:
-      use_entities: true
-  - tell_number:
-      use_entities: true
-  - tell_city:
-      use_entities: true
+- greet:
+    use_entities: []
+- goodbye:
+    use_entities: []
+- bot_challenge:
+    use_entities: []
+- ask_housing:
+    use_entities: []
+- tell_number:
+    use_entities: true
+- tell_city:
+    use_entities: true
+- nlu_fallback:
+    use_entities: []
 entities:
-  - number
-  - city
+- number
+- city
 slots:
   min_price:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
     max_value: 10000000.0
     min_value: 0.0
   max_price:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
     max_value: 10000000.0
     min_value: 0.0
-  city:
+  housing_city:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
   min_area:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
     max_value: 1000.0
     min_value: 0.0
   min_rooms:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
-    auto_fill: true
+    auto_fill: false
     influence_conversation: false
-    min_value: 0.0
     max_value: 10.0
+    min_value: 0.0
+  requested_slot:
+    type: rasa.shared.core.slots.CategoricalSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
+    values: []
 responses:
   utter_greet:
-    - text: Hey! I am a bot that will help you choose your future housing!
+  - text: Hey! I am a bot that will help you choose your future housing!
+  - text: Good day! I am a bot that helps to choose housing.
   utter_did_that_help:
-    - text: Did that help you?
+  - text: Did that help you?
   utter_goodbye:
-    - text: Bye
+  - text: Bye
+  - text: See you!
+  - text: See you later!
+  - text: Goodbye
   utter_iamabot:
-    - text: I am a bot, I always feel good.
+  - text: I am a bot, I always feel good.
+  - text: I am a robot, I was created to help humans.
   utter_ask_specifics:
-    - text: Sure thing! Give me some details.
+  - text: Sure thing! Give me some details.
+  - text: Of course! I would need some details from you.
+  - text: Got you! Let's discuss the specifics.
   utter_ask_max_price:
-    - text: What is the maximum price you're willing to pay for it?
+  - text: What is the maximum price you're willing to pay for it?
+  - text: What is the biggest price you can pay?
+  - text: What is the biggest price you may pay?
   utter_ask_min_price:
-    - text: What is the minimal price of your future housing?
-  utter_ask_city:
-    - text: In which city?
+  - text: What is the minimal price of your future housing?
+  utter_ask_housing_city:
+  - text: In which city?
+  - text: In which city do you wish your housing to be?
+  - text: In which city would you like it?
   utter_ask_min_area:
-    - text: What minimal area do you want it to be?
+  - text: What minimal area do you want it to be?
+  - text: What minimal area suits you?
   utter_ask_min_rooms:
-    - text: And at least how many rooms?
+  - text: And at least how many rooms?
+  - text: At least how many rooms do you want it to be?
+  utter_this_is_wrong:
+  - text: This is wrong!
+  - text: Try again!
   utter_done:
-    - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {city}, with minimal {min_area} square meters and {min_rooms} rooms.
+  - text: Done! We are searching for a home in range from {min_price} euros to {max_price} euros in {housing_city}, with minimal {min_area} square meters and {min_rooms} rooms.
 actions:
-  - action_dialogpt
-  - action_get_housing
+- action_dialogpt
+- action_get_housing
+- validate_housing_form
 forms:
   housing_form:
+    ignored_intents:
+    - bot_challenge
+    - greet
+    - goodbye
     required_slots:
-      city:
-        - entity: city
-          type: from_entity
+      housing_city:
+      - entity: city
+        type: from_entity
       max_price:
-        - entity: number
-          type: from_entity
-      min_price:
-        - entity: number
-          type: from_entity
+      - entity: number
+        type: from_entity
       min_area:
-        - entity: number
-          type: from_entity
+      - entity: number
+        type: from_entity
+      min_price:
+      - entity: number
+        type: from_entity
       min_rooms:
-        - entity: number
-          type: from_entity
-e2e_actions: [ ]
+      - entity: number
+        type: from_entity
+e2e_actions: []

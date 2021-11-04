@@ -1,72 +1,67 @@
 version: "2.0"
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
-- intent: goodbye
-  examples: |
-    - good afternoon
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
-- intent: bot_challenge
-  examples: |
-    - how are you?
-    - how is it going?
-- intent: ask_housing
-  examples: |
-    - I want to get information about housing
-    - can you help me with selecting a house?
-    - I am interesting in finding a house
-    - I want to find an apartment
-    - Help me find housing
-    - I need to get an apartment
-    - I am looking for a flat
-- intent: tell_number
-  examples: |
-    - Maximum price is [400](number)
-    - Minimum price is [10000](number)
-    - It is [123123](number)
-    - It is [12300](number) euros
-    - The lowest is [1231](number)
-    - Highest is [1123](number) euros
-    - I can pay up to [400111](number)
-    - My budget is [400](price)
-    - [400](number)
-    - [12003](number) euros
-    - [12313](number) is fine
-    - [150](number) square meters
-    - [100](number) meters
-    - [70](number) m2
-    - I want [100](number) square meters
-    - At least [45](number)
-    - [10](number) rooms
-    - I want [4](number) rooms
-    - At least [6](number) rooms
-- intent: tell_city
-  examples: |
-    - It is in [Tilburg](city)
-    - I would like a house in [Amsterdam](city)
-    - Give me some results in [The Hague](city)
-    - It should be in [Rotterdam](city)
-    - [Tilburg](city)
-    - [Breda](city), Netherlands
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - good morning
+      - good evening
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - have a nice day
+      - see you later
+  - intent: bot_challenge
+    examples: |
+      - how are you?
+      - how is it going?
+  - intent: ask_housing
+    examples: |
+      - I want to get information about housing
+      - can you help me with selecting a house?
+      - I am interesting in finding a house
+      - I want to find an apartment
+      - Help me find housing
+      - I need to get an apartment
+      - I am looking for a flat
+      - Choose housing
+      - I want to choose housing
+  - intent: tell_number
+    examples: |
+      - Maximum price is [400](number)
+      - Minimum price is [10000](number)
+      - It is [123123](number)
+      - It is [12300](number) euros
+      - The lowest is [1231](number)
+      - Highest is [1123](number) euros
+      - I can pay up to [400111](number)
+      - My budget is [400](number)
+      - [400](number)
+      - [12003](number) euros
+      - [12313](number) is fine
+      - [150](number) square meters
+      - [100](number) meters
+      - [70](number) m2
+      - I want [100](number) square meters
+      - At least [45](number)
+      - [10](number) rooms
+      - I want [4](number) rooms
+      - At least [6](number) rooms
+      - [1500](number)
+  - intent: tell_city
+    examples: |
+      - It is in [Tilburg](city)
+      - I would like a house in [Amsterdam](city)
+      - Give me some results in [The Hague](city)
+      - It should be in [Rotterdam](city)
+      - [Tilburg](city)
+      - [Breda](city), Netherlands
+      - [prague](city)
+      - [Milan](city)
+      - [London](city)
+      - [cardiff](city)
+      - [brussels](city)
+      - [Paris](city)
+      - [Berlin](city)

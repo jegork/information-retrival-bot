@@ -21,7 +21,7 @@ services:
     environment:
       - TRANSFORMERS_CACHE=/app/cache
     volumes:
-      - ./rasa/actions/data:/app/actions/data
+      - ./rasa/actions:/app/actions
   server:
     build: ./server
     container_name: fastapi_server
