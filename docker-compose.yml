@@ -1,7 +1,7 @@
 version: "3"
 services:
   rasa:
-    build: ./rasa
+    build: rasa_ai
     container_name: rasa_server
     user: root
     ports:
@@ -14,17 +14,18 @@ services:
     depends_on:
       - actions
   actions:
-    build: ./rasa/actions
+    build: rasa_ai/actions
     container_name: rasa_actions_server
     ports:
       - "5055:5055"
     environment:
       - TRANSFORMERS_CACHE=/app/cache
     volumes:
-      - ./rasa/actions:/app/actions
+      - ./rasa_ai/actions:/app/actions
   server:
     build: ./server
     container_name: fastapi_server
+    command: uvicorn main:app --host 0.0.0.0 --log-level debug
     ports:
       - "8000:8000"
     environment:

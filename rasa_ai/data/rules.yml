@@ -1,0 +1,30 @@
+version: "2.0"
+rules:
+  - rule: Activate form
+    steps:
+      - intent: ask_housing
+      - action: utter_ask_specifics
+      - action: housing_form
+      - active_loop: housing_form
+      - active_loop: null
+      - action: utter_done
+      - action: action_get_housing
+
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Say 'I am a bot' anytime the user challenges
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: Say hi
+    steps:
+      - intent: greet
+      - action: utter_greet
+  - rule: Fallback to DialoGPT
+    steps:
+      - intent: nlu_fallback
+      - action: action_dialogpt

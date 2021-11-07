@@ -8,6 +8,7 @@ COPY config.yml ./
 COPY credentials.yml ./
 COPY domain.yml ./
 COPY endpoints.yml ./
+COPY connectors/* ./connectors/
 
 RUN rasa train
 

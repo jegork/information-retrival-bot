@@ -53,7 +53,17 @@ class Connection:
 
             response_data['text'] = text
 
+        if 'title' in data:
+            if self.lang != 'en':
+                text = translate(data['title'], self.lang, 'en')
+            else:
+                text = data['title']
+
+            response_data['title'] = text
+
         if 'link' in data:
+            response_data['link'] = data['link']
+
             r = requests.get(data['link'])
 
             soup = BeautifulSoup(r.text, features='html.parser')

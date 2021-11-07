@@ -23,6 +23,11 @@ entities:
 - number
 - city
 slots:
+  housing_city:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: false
+    influence_conversation: false
   min_price:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
@@ -37,11 +42,6 @@ slots:
     influence_conversation: false
     max_value: 10000000.0
     min_value: 0.0
-  housing_city:
-    type: rasa.shared.core.slots.TextSlot
-    initial_value: null
-    auto_fill: false
-    influence_conversation: false
   min_area:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
@@ -107,24 +107,5 @@ actions:
 - validate_housing_form
 forms:
   housing_form:
-    ignored_intents:
-    - bot_challenge
-    - greet
-    - goodbye
-    required_slots:
-      housing_city:
-      - entity: city
-        type: from_entity
-      max_price:
-      - entity: number
-        type: from_entity
-      min_area:
-      - entity: number
-        type: from_entity
-      min_price:
-      - entity: number
-        type: from_entity
-      min_rooms:
-      - entity: number
-        type: from_entity
+    required_slots: {}
 e2e_actions: []

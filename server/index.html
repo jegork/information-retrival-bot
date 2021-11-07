@@ -92,16 +92,21 @@
         background-color: white;
     }
 
-    #messages > p {
+    #messages > div {
         padding: 10px;
         max-width: 50%;
         box-shadow: 0 0 1px black;
         border-radius: 3px;
         margin: 15px 10px;
+    }
+
+    #messages > div > p {
+        margin: 0;
+        padding: 0;
         white-space: pre-line;
     }
 
-    #messages > p > img {
+    #messages > div > img {
         max-width: 100%;
         max-height: 150px;
         display: block;
@@ -158,28 +163,31 @@
 
     websocket.onmessage = (event) => {
         const messagesList = document.getElementById('messages');
-
+        let newMessage = document.createElement('div');
         const jsonData = JSON.parse(event.data)
 
-
-        if ('text' in jsonData) {
-            let messageElement = document.createElement('p');
-            messageElement.innerHTML = jsonData.text;
-
-            messageElement.classList.add('outbound');
-
-            messagesList.appendChild(messageElement);
+        if ('image' in jsonData) {
+            const messageImage = document.createElement('img');
+            messageImage.src = jsonData.image;
+            newMessage.appendChild(messageImage);
         }
 
-        if ('image' in jsonData) {
-            const imgElement = document.createElement('img');
-            imgElement.src = jsonData.image;
-            const outboundMsgs = messagesList.getElementsByClassName('outbound');
-            const lastMsg = outboundMsgs[outboundMsgs.length-1];
-            console.log(imgElement.outerHTML);
-            lastMsg.innerHTML = imgElement.outerHTML + " " + lastMsg.innerHTML;
-            // console.log(lastMsg.innerHTML);
-            // messageElement.innerHTML = imgElement.innerHTML + messageElement.innerHTML;
+        if ('text' in jsonData) {
+            let messageText = document.createElement('p');
+
+            if ('title' in jsonData && 'link' in jsonData) {
+                let messageTitle = document.createElement('a');
+                messageTitle.href = jsonData.link;
+                messageTitle.innerText = jsonData.title;
+
+                newMessage.appendChild(messageTitle);
+            }
+
+            messageText.innerText = jsonData.text;
+            newMessage.appendChild(messageText)
+
+            newMessage.classList.add('outbound');
+            messagesList.appendChild(newMessage);
         }
 
 
@@ -235,11 +243,14 @@
         const messagesList = document.getElementById('messages');
 
         if (text !== "") {
-            let messageElement = document.createElement('p');
-            messageElement.innerHTML = text;
-            messageElement.classList.add('inbound');
+            let newMessage = document.createElement('div');
+            let messageText = document.createElement('p');
+            messageText.innerText = text;
 
-            messagesList.appendChild(messageElement);
+            newMessage.appendChild(messageText);
+            newMessage.classList.add('inbound');
+
+            messagesList.appendChild(newMessage);
             websocket.send(JSON.stringify({ 'message': text, 'lang': lang }));
         }
         else {
