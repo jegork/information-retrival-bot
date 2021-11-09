@@ -16,11 +16,11 @@ class GenerateText(Action):
 
     def __init__(self):
         if os.path.exists('/app/models/dialogpt-ir-bot'):
-            print('Models exist')
+            logger.info('Models exist')
             self.model = AutoModelForCausalLM.from_pretrained("/app/models/dialogpt-ir-bot")
             self.tokenizer = AutoTokenizer.from_pretrained("/app/models/dialogpt-ir-bot")
         else:
-            print('Downloading models')
+            logger.info('Downloading models')
             self.model = AutoModelForCausalLM.from_pretrained("jegorkitskerkin/dialogpt-ir-bot")
             self.tokenizer = AutoTokenizer.from_pretrained("jegorkitskerkin/dialogpt-ir-bot")
 
@@ -154,6 +154,7 @@ class ValidateHousingForm(FormValidationAction):
         return ['housing_city', 'min_price', 'max_price', 'min_area', 'min_rooms']
 
     async def extract_housing_city(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        # TODO: write tests
         if tracker.get_slot('requested_slot') == 'housing_city':
             if tracker.latest_message['intent']['name'] == 'tell_city':
                 value = tracker.latest_message['entities'][0]['value']
@@ -165,6 +166,7 @@ class ValidateHousingForm(FormValidationAction):
             return {}
 
     async def extract_min_price(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        # TODO: write tests
         if tracker.get_slot('requested_slot') == 'min_price':
             if tracker.latest_message['intent']['name'] == 'tell_number':
                 value = tracker.latest_message['entities'][0]['value']
@@ -176,6 +178,7 @@ class ValidateHousingForm(FormValidationAction):
             return {}
 
     async def extract_max_price(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        # TODO: write tests
         if tracker.get_slot('requested_slot') == 'max_price':
             if tracker.latest_message['intent']['name'] == 'tell_number':
                 value = tracker.latest_message['entities'][0]['value']
@@ -187,6 +190,7 @@ class ValidateHousingForm(FormValidationAction):
             return {}
 
     async def extract_min_area(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        # TODO: write tests
         if tracker.get_slot('requested_slot') == 'min_area':
             if tracker.latest_message['intent']['name'] == 'tell_number':
                 value = tracker.latest_message['entities'][0]['value']
@@ -198,6 +202,7 @@ class ValidateHousingForm(FormValidationAction):
             return {}
 
     async def extract_min_rooms(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain):
+        # TODO: write tests
         if tracker.get_slot('requested_slot') == 'min_rooms':
             if tracker.latest_message['intent']['name'] == 'tell_number':
                 value = tracker.latest_message['entities'][0]['value']

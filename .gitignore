@@ -2,3 +2,6 @@ text-generative-model/data/*/*
 **/__pycache__
 .idea
 rasa_ai/models/*
+rasa_ai/results
+rasa_ai/events.*
+rasa_ai/rasa.db

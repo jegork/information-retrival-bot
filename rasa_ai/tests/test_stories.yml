@@ -1,0 +1,54 @@
+stories:
+  - story: Test text generative model
+    steps:
+      - user: |
+          Who is Albert Einstein?
+        intent: nlu_fallback
+      - action: action_dialogpt
+      - user: |
+          i love red roses
+        intent: nlu_fallback
+      - action: action_dialogpt
+      - user: |
+          will robots destroy humanity?
+        intent: nlu_fallback
+      - action: action_dialogpt
+  - story: Test form happy path
+    steps:
+      - user: |
+          hello
+        intent: greet
+      - action: utter_greet
+      - user: |
+          I want to choose housing
+        intent: ask_housing
+      - action: utter_ask_specifics
+      - action: housing_form
+      - active_loop: housing_form
+      - user: |
+          In [Amsterdam](city)
+        intent: tell_city
+      - slot_was_set:
+          - housing_city: Amsterdam
+      - user: |
+          (1000)[number]
+        intent: tell_number
+      - slot_was_set:
+          - min_price: 1000
+      - user: |
+          (2000)[number]
+        intent: tell_number
+      - slot_was_set:
+          - max_price: 1000
+      - user: |
+          (50)[number]
+        intent: tell_number
+      - slot_was_set:
+          - min_arae: 50
+      - user: |
+          (1)[number]
+        intent: tell_number
+      - slot_was_set:
+          - min_rooms: 1
+      - action: utter_done
+      - action: action_get_housing

@@ -106,7 +106,7 @@ app.add_middleware(
 
 @app.get('/')
 def main_page():
-    return FileResponse('index.html')
+    return FileResponse(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'index.html'))
 
 
 @app.websocket('/ws')
