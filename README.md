@@ -3,12 +3,11 @@
 ## Build
 
 ```bash
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
+docker-compose build
 ```
 
 ## Run
 
-From the root directory:
 ```bash
 docker-compose up
 ```
@@ -24,8 +23,8 @@ DialoGPT can be run and tested using the ``text-generative-model/train_dialogpt.
 - [x] Make Rasa custom action to fetch results from server
 - [x] Add message for "no results found"
 - [ ] Add buttons for interior and city choice
-- [ ] Write test stories
-- [ ] Write FastAPI tests
+- [x] Write test stories
+- [x] Write FastAPI tests
 - [x] Create idea for what the bot is going to search for
 - [x] Create related Rasa conversations
 - [x] Add Rasa filtering dialogues

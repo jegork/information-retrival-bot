@@ -15,7 +15,7 @@ FASTAPI_WEBSOCKET_URL = 'ws://localhost:8000/ws'
 
 
 with open(DOMAIN_YAML_PATH) as f:
-    DOMAIN = yaml.load(f.read())
+    DOMAIN = yaml.load(f.read(), Loader=yaml.FullLoader)
 
 
 @pytest.mark.asyncio
