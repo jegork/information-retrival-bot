@@ -1,0 +1,55 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+jobs:
+  unit-test:
+    executor: python/default
+    steps:
+      - checkout
+      - python/install-packages:
+          pip-dependency-file: tests/unit/requirements.txt
+          pkg-manager: pip
+          args: --use-deprecated=legacy-resolver
+      - run:
+          command: |
+            python -m pytest tests/unit/
+          name: Run unit tests
+  integration-test:
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - checkout
+      - run:
+          command: |
+            sudo apt-get update
+            sudo apt-get install pipenv
+          name: Install pipenv
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.8/dist-packages
+      - restore_cache:  # ensure this step occurs *before* installing dependencies
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run:
+          command: |
+            pipenv install -r tests/integration/requirements.txt
+          name: Install requirements.txt
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.8/dist-packages"
+      - run:
+          command: |
+            docker-compose up -d
+          name: Start docker-compose
+      - run:
+          command: |
+            pipenv run pytest tests/integration/
+          name: Run integration tests
+
+workflows:
+  sample:
+    jobs:
+      - unit-test
+      - integration-test
