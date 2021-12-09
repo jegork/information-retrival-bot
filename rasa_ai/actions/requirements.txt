@@ -1,3 +1,3 @@
 transformers[torch]
-rasa-sdk
+rasa-sdk==2.8.2
 keras==2.6.*

@@ -23,7 +23,7 @@ async def test_generate_text():
 
 
 @pytest.mark.asyncio
-async def test_get_housing_one_result():
+async def test_get_housing_none_result():
     mock_conn = Mock()
     mock_cur = Mock()
 
@@ -68,7 +68,7 @@ async def test_get_housing_one_result():
 
 
 @pytest.mark.asyncio
-async def test_get_housing_ten_result():
+async def test_get_housing_five_results():
     mock_conn = Mock()
     mock_cur = Mock()
 

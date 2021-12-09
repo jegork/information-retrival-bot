@@ -159,7 +159,7 @@
         alert("Websocket not supported! Please update your browser.")
     }
 
-    let websocket = new WebSocket("ws://localhost:8000/ws");
+    let websocket = new WebSocket("ws://" + location.host + "/ws");
 
     websocket.onmessage = (event) => {
         const messagesList = document.getElementById('messages');

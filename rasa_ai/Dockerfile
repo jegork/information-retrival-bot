@@ -1,4 +1,4 @@
-FROM rasa/rasa
+FROM rasa/rasa:2.8.15
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ COPY config.yml ./
 COPY credentials.yml ./
 COPY domain.yml ./
 COPY endpoints.yml ./
+COPY endpoints.aws.yml ./
 COPY connectors/* ./connectors/
 
 RUN rasa train
